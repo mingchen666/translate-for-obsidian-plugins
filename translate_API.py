@@ -94,11 +94,16 @@ def GPT_Translate(query):
     response = requests.post(base_url, headers=headers, data=json.dumps(data))
     # 解析和打印响应内容
     if response.status_code == 200:
-        response = response.json()
-        response_text = response["choices"][0]["message"]["content"]
-        print(f'---{query}翻译成功------------')
-        return response_text
+        try:
+            response = response.json()
+            response_text = response["choices"][0]["message"]["content"]
+            print(f'---{query} ✅ 翻译成功------------')
+            return response_text
+        except Exception as e:
+            print(e)
+            print(f'---{query} ⚠️ 翻译报错------------')
     else:
+        print(f'---{query} ❌ 翻译失败------------')
         return query
 
 
