@@ -49,6 +49,28 @@ def Baidu_Translate(query):
 
     return translated_text
 
+def XiaoniuTranslate(query):
+    # 构建请求的URL和参数
+    xiaoniu_url = 'http://api.niutrans.com/NiuTransServer/translation'
+    params = {
+        "from": "en",
+        "to": "zh",
+        "apikey": config_data["xiaoniu_apikey"],
+        "src_text": query
+    }
+
+    # 发送POST请求
+    response = requests.post(xiaoniu_url, data=params)
+
+    # 解析响应内容
+    res_dict = response.json()
+    if "tgt_text" in res_dict:
+        translated_text = res_dict['tgt_text']
+        print(f'---{query}翻译成功------------')
+    else:
+        translated_text = query
+
+    return translated_text
 
 def GPT_Translate(query):
     base_url = config_data['base_url']
@@ -84,6 +106,8 @@ def Translate_words(query):
         return Baidu_Translate(query)
     elif config_data['is_use_GPT']=="True":
         return GPT_Translate(query)
+    elif config_data['is_use_Xiaoniu']=="True":
+        return XiaoniuTranslate(query)
     else:
         return query
 

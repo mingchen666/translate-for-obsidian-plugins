@@ -29,12 +29,16 @@
 ### 环境要求
 
 确保你已经安装了Python 3.x版本。本项目在Python 3.7上进行测试。
-安装`requests`,`hashlib`等库
+安装`requests`、`hashlib`等库
+
+```sh
+pip install -r requirements.txt
+```
 
 ### 下载并配置
 
 1. 在GitHub上克隆或下载此项目到本地目录。
-2. 打开 `config.json` 文件，并填写正确的appid密钥和URL、文件路径、(开始结束行可以不替换,另外使用百度翻译或者gpt翻译请记得设置True/False)
+2. 复制 `config.sample.json` 文件并重命名为 `config.json` 文件，并填写正确的appid密钥和URL、文件路径、(开始结束行可以不替换,另外使用百度翻译或者gpt翻译请记得设置True/False)
 
 ### 运行程序
 
