@@ -3,6 +3,7 @@
 
 from pathlib import Path
 import re
+import shutil
 import sys
 
 from translate_API import Translate_words
@@ -29,6 +30,8 @@ def matches_setName(old_str_text, setName_pattern):
     if old_str_text:
         matches = setName_pattern.findall(old_str_text)
         new_str_text = old_str_text
+        if matches:
+            print(matches)
         for match in matches:
             translated_param = Translate_words(match)  # 假设这是一个翻译函数
             # 修改替换逻辑，同时考虑单引号和双引号
@@ -50,6 +53,8 @@ def matches_setDesc(old_str_text, setDesc_pattern):
     # 判断字符串是否为空
     if old_str_text:
         matches = setDesc_pattern.findall(old_str_text)
+        if matches:
+            print(matches)
         new_str_text = old_str_text
         for match in matches:
             translated_param = Translate_words(match)  # 假设这是一个翻译函数
@@ -219,8 +224,8 @@ def read_js_file(js_file_path, new_js_file_name, start_line: int, end_line: int)
     :param start_line: 开始行数
     :param end_line:
     """
-    # js_file_path = Path(js_file_path)
-    # new_js_file_name = Path(new_js_file_name)
+    js_file_path = Path(js_file_path)
+    new_js_file_name = Path(new_js_file_name)
     
     with open(js_file_path, 'r', encoding='utf-8') as file:
         count = 0
@@ -229,26 +234,29 @@ def read_js_file(js_file_path, new_js_file_name, start_line: int, end_line: int)
         if start_line is not None and end_line is not None:
             lines = lines[start_line - 1: end_line]
 
-        with open(new_js_file_name, 'w', encoding='utf-8') as f:
-            for line in lines:
-                decoded_line1 = line.rstrip()
-                decoded_line2 = matches_setName(decoded_line1, setName_pattern)
-                decoded_line3 = matches_setDesc(decoded_line2, setDesc_pattern)
-                # print(matches_both_set(decoded_line2))
-                decoded_line4 = matches_description(decoded_line3)
-                decoded_line5=matches_info(decoded_line4)
-                # decoded_line6 = matches_li_tag(decoded_line5)
-                decoded_line7 = matches_p_tag(decoded_line5)
+    with open(new_js_file_name, 'w', encoding='utf-8') as f:
+        content = "".join(lines)
+        # for line in lines:
+        content = content.rstrip()
+        content = matches_setName(content, setName_pattern)
+        # content = matches_setDesc(content, setDesc_pattern)
+        # # print(matches_both_set(decoded_line2))
+        # content = matches_description(content)
+        # content = matches_info(content)
+        # # decoded_line6 = matches_li_tag(decoded_line5)
+        # content = matches_p_tag(content)
 
-                decoded_line8 = matches_appendText(decoded_line7,appendtText_pattern)
-                decoded_line9 = matches_addDesc(decoded_line8, addDesc_pattern)
-                new_line = matches_data_description(decoded_line9)
-                # print(new_line)
-                if new_line is not None:
-                    f.write(new_line + '\n')
+        # content = matches_appendText(content,appendtText_pattern)
+        # content = matches_addDesc(content, addDesc_pattern)
+        # content = matches_data_description(content)
+        # print(new_line)
+        if content is not None:
+            f.write(re.sub(r"\n+", "\n", content))
         
     # # backup for Original version
-    # shutil.copy(js_file_path, js_file_path.parent / "main.bk.js")
-    # shutil.copy(new_js_file_name, new_js_file_name.parent / "main.js")
+    backup_file_path = js_file_path.parent / "main.bk.js"
+    if not backup_file_path.exists():
+        shutil.copy(js_file_path, backup_file_path)
+    shutil.copy(new_js_file_name, new_js_file_name.parent / "main.js")
     print('============< 翻译完成 >============')
 

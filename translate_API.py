@@ -66,8 +66,9 @@ def XiaoniuTranslate(query):
     res_dict = response.json()
     if "tgt_text" in res_dict:
         translated_text = res_dict['tgt_text']
-        print(f'---{query}翻译成功------------')
+        print(f'---{query} ✅ 翻译成功------------')
     else:
+        print(f'---{query} ❌ 翻译失败------------')
         translated_text = query
 
     return translated_text
