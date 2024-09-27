@@ -2,6 +2,7 @@
 
 本项目是一个用于自动翻译Obsidian的插件界面的Python脚本。通过调用正则表达式和翻译api，可以将插件中的大部分英文文本转换为中文
 
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/mingchen666/translate-for-obsidian-plugins/total)
 ## 为什么写这个项目？
 
 因为我看到很多插件都是英文的，对中文不友好，所以于是写了这个小项目
